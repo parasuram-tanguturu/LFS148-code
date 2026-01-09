@@ -361,6 +361,100 @@ Edit `~/.gitconfig`:
 	path = ~/.gitconfig-parasuram
 ```
 
+### Configuring Specific Repositories
+
+If you want specific repositories (e.g., repo1, repo2, repo5) to use parasuram-tanguturu while others use sai-annamacharya, you have two options:
+
+#### Option 1: Directory-Based Conditional Includes
+
+If your repos are organized in specific directories, add conditional includes to `~/.gitconfig`:
+
+```ini
+# Use parasuram-tanguturu for specific directories
+[includeIf "gitdir:~/path/to/repo1/"]
+	path = ~/.gitconfig-parasuram
+
+[includeIf "gitdir:~/path/to/repo2/"]
+	path = ~/.gitconfig-parasuram
+
+[includeIf "gitdir:~/path/to/repo5/"]
+	path = ~/.gitconfig-parasuram
+
+# All other repos will use default (sai-annamacharya) config
+```
+
+**Example:**
+```ini
+[includeIf "gitdir:~/Projects/repo1/"]
+	path = ~/.gitconfig-parasuram
+
+[includeIf "gitdir:~/Projects/repo2/"]
+	path = ~/.gitconfig-parasuram
+
+[includeIf "gitdir:~/Projects/repo5/"]
+	path = ~/.gitconfig-parasuram
+```
+
+#### Option 2: Per-Repository Configuration
+
+Set the configuration directly in each repository:
+
+**For repo1, repo2, repo5 (parasuram-tanguturu):**
+```bash
+# Configure repo1
+cd ~/path/to/repo1
+git config user.name "parasuram-tanguturu"
+git config user.email "lnparasuram@gmail.com"
+git remote set-url origin git@github.com-parasuram:parasuram-tanguturu/REPO1.git
+
+# Configure repo2
+cd ~/path/to/repo2
+git config user.name "parasuram-tanguturu"
+git config user.email "lnparasuram@gmail.com"
+git remote set-url origin git@github.com-parasuram:parasuram-tanguturu/REPO2.git
+
+# Configure repo5
+cd ~/path/to/repo5
+git config user.name "parasuram-tanguturu"
+git config user.email "lnparasuram@gmail.com"
+git remote set-url origin git@github.com-parasuram:parasuram-tanguturu/REPO5.git
+```
+
+**For other repos (sai-annamacharya):**
+They will automatically use the global default (sai/ram config) - no action needed.
+
+**Verify the configuration:**
+```bash
+# Check which account is configured
+cd ~/path/to/repo1
+git config user.name        # Should show: parasuram-tanguturu
+git config user.email       # Should show: lnparasuram@gmail.com
+git remote -v               # Should show: git@github.com-parasuram:...
+
+# For other repos
+cd ~/path/to/other-repo
+git config user.name        # Should show: sai (or ram)
+git config user.email       # Should show: ysai0603@outlook.com
+```
+
+#### Option 3: Pattern-Based (If Repos Share a Naming Pattern)
+
+If your repos follow a naming pattern, you can use wildcards:
+
+```ini
+# In ~/.gitconfig
+[includeIf "gitdir:~/Projects/parasuram-*/"]
+	path = ~/.gitconfig-parasuram
+
+# All repos matching ~/Projects/parasuram-*/ will use parasuram-tanguturu
+# Everything else uses sai-annamacharya
+```
+
+**Which option to choose?**
+- **Option 1** (Directory-based): Best if repos are organized in specific folders
+- **Option 2** (Per-repo): Best if repos are scattered or you want explicit control
+- **Option 3** (Pattern-based): Best if repos follow a naming convention
+
 ---
 
 ## Troubleshooting
