@@ -7,3 +7,6 @@ settings.json
 .envrc
 .direnv
 .devenv
+
+.history/
+.idea/

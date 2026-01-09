@@ -1,0 +1,172 @@
+direction: down
+
+title_box: "Telemetry E2E Flow: Bidirectional Data Journey" {
+  style: {
+    font-size: 44
+    bold: true
+    font-color: "#1a1a1a"
+    fill: "#f5f5f5"
+    stroke: "#333"
+    stroke-width: 3
+  }
+}
+
+title_box -> http_world: "" {
+  style: {
+    stroke-width: 0
+  }
+}
+
+http_world: HTTP World {
+  style: {
+    animated: true
+    fill: "#2196F3"
+    stroke: "#1976D2"
+    stroke-width: 4
+    font-color: white
+    font-size: 22
+    bold: true
+  }
+  label: "🌐 HTTP World\n\n• HTTP Requests/Responses\n• Headers (traceparent, tracestate)\n• Status codes, methods\n• URL paths, query params\n\nExample:\nGET /api/users?page=1\nHost: api.example.com\nTraceparent: 00-..."
+}
+
+app_world: Application World {
+  style: {
+    fill: "#4CAF50"
+    stroke: "#388E3C"
+    stroke-width: 4
+    font-color: white
+    font-size: 22
+    bold: true
+  }
+  label: "💻 Application World\n\n• Business logic execution\n• Span creation & context propagation\n• Log generation\n• Error handling\n• Instrumentation hooks\n\nExample:\nUserService.getUser(id)\nSpan: GET /api/users\nLog: Processing request"
+}
+
+obj_world: Object World {
+  style: {
+    fill: "#FF9800"
+    stroke: "#F57C00"
+    stroke-width: 4
+    font-color: white
+    font-size: 22
+    bold: true
+  }
+  label: "📦 Object World\n\n• Domain objects & DTOs\n• Span/Log/Metric objects\n• Attributes & tags\n• Event structures\n• Resource metadata\n\nExample:\nSpan{name, traceId, spanId}\nUser{id, name, email}\nMetric{name, value, labels}"
+}
+
+rel_world: Relational World {
+  style: {
+    fill: "#9C27B0"
+    stroke: "#7B1FA2"
+    stroke-width: 4
+    font-color: white
+    font-size: 22
+    bold: true
+  }
+  label: "🗄️ Relational World\n\n• Database queries\n• Data persistence\n• Relationships & joins\n• Transaction management\n• Query optimization\n\nExample:\nSELECT * FROM users\nWHERE id = 123\nINSERT INTO spans..."
+}
+
+wire_world: Wire Protocol World {
+  style: {
+    fill: "#F44336"
+    stroke: "#D32F2F"
+    stroke-width: 4
+    font-color: white
+    font-size: 22
+    bold: true
+  }
+  label: "📡 Wire Protocol World\n\n• OTLP serialization\n• gRPC/HTTP transport\n• Protocol buffers\n• Network transmission\n• Collector ingestion\n\nExample:\nExportTraceServiceRequest\nOTLP/gRPC → Collector\nSerialized spans/logs/metrics"
+}
+
+http_world -> app_world: "1️⃣ Request Arrival\n• Parse HTTP headers\n• Extract trace context\n• Create root span\n• Start request processing" {
+  style: {
+    animated: true
+    stroke-width: 5
+    stroke: "#1976D2"
+    font-size: 16
+    font-color: "#1976D2"
+    bold: true
+  }
+}
+
+app_world -> obj_world: "2️⃣ Object Creation\n• Transform to domain objects\n• Create span objects\n• Build attribute maps\n• Generate log entries" {
+  style: {
+    animated: true
+    stroke-width: 5
+    stroke: "#388E3C"
+    font-size: 16
+    font-color: "#388E3C"
+    bold: true
+  }
+}
+
+obj_world -> rel_world: "3️⃣ Data Persistence\n• Execute DB queries\n• Store business data\n• Save telemetry data\n• Commit transactions" {
+  style: {
+    animated: true
+    stroke-width: 5
+    stroke: "#F57C00"
+    font-size: 16
+    font-color: "#E65100"
+    bold: true
+  }
+}
+
+rel_world -> wire_world: "4️⃣ Telemetry Export\n• Serialize spans/logs/metrics\n• Encode to OTLP\n• Send via gRPC/HTTP\n• Transmit to collector" {
+  style: {
+    animated: true
+    stroke-width: 5
+    stroke: "#D32F2F"
+    font-size: 16
+    font-color: "#D32F2F"
+    bold: true
+  }
+}
+
+wire_world -> rel_world: "5️⃣ Collector Response\n• Acknowledge receipt\n• Batch confirmation\n• Export status\n• Error handling" {
+  style: {
+    animated: true
+    stroke-width: 5
+    stroke: "#D32F2F"
+    stroke-dash: 5
+    font-size: 16
+    font-color: "#D32F2F"
+    bold: true
+  }
+}
+
+rel_world -> obj_world: "6️⃣ Data Retrieval\n• Query results returned\n• Load domain objects\n• Fetch telemetry history\n• Read from cache/DB" {
+  style: {
+    animated: true
+    stroke-width: 5
+    stroke: "#F57C00"
+    stroke-dash: 5
+    font-size: 16
+    font-color: "#E65100"
+    bold: true
+  }
+}
+
+obj_world -> app_world: "7️⃣ Object Processing\n• Process domain objects\n• Update span attributes\n• Add log entries\n• Calculate metrics" {
+  style: {
+    animated: true
+    stroke-width: 5
+    stroke: "#388E3C"
+    stroke-dash: 5
+    font-size: 16
+    font-color: "#388E3C"
+    bold: true
+  }
+}
+
+app_world -> http_world: "8️⃣ Response Generation\n• Build HTTP response\n• Add trace headers\n• Set status code\n• Send response to client\n• End span" {
+  style: {
+    animated: true
+    stroke-width: 5
+    stroke: "#1976D2"
+    stroke-dash: 5
+    font-size: 16
+    font-color: "#1976D2"
+    bold: true
+  }
+}
+
